@@ -32,11 +32,24 @@ const UserSchema = new mongoose.Schema(
     friends: {
       type: Array,
       default: [],
+      required: false, // Optional
     },
-    location: String,
-    occupation: String,
-    viewedProfile: Number,
-    impressions: Number,
+    location: {
+      type: String,
+      required: false, // Optional
+    },
+    occupation: {
+      type: String,
+      required: false, // Optional
+    },
+    viewedProfile: {
+      type: Number,
+      required: false, // Optional
+    },
+    impressions: {
+      type: Number,
+      required: false, // Optional
+    },
   },
   { timestamps: true }
 );
