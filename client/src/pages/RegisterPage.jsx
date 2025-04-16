@@ -2,6 +2,9 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import image1 from "../assets/image1.jpg";
+import { BACKENDURL } from "../config";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -23,11 +26,31 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/api/auth/register", formData);
+      const res = await axios.post(`${BACKENDURL}/auth/register`, formData);
       console.log("Registration successful", res.data);
-      navigate("/login");
+      toast.success("Registration successful! Redirecting to login...", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      // Add a small delay before navigation to allow the toast to be seen
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500);
     } catch (err) {
-      setError(err.response?.data?.error || "Registration failed.");
+      const errorMessage = err.response?.data?.error || "Registration failed.";
+      setError(errorMessage);
+      toast.error(errorMessage, {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     }
   };
 
@@ -36,6 +59,7 @@ const Register = () => {
       className="flex items-center justify-center min-h-screen bg-cover bg-center px-4"
       style={{ backgroundImage: `url(${image1})` }}
     >
+      <ToastContainer />
       <div className="bg-white p-10 rounded-2xl shadow-xl w-full max-w-lg border border-gray-300 backdrop-blur-lg bg-opacity-90">
         <h2 className="text-4xl font-bold text-center text-[#762e18] mb-6">
           SIGN UP
