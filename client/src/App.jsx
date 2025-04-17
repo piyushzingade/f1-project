@@ -4,7 +4,7 @@ import Login from "./pages/Login";
 import { AboutUs } from "./pages/AboutUsPage";
 import { ContactUs } from "./pages/ContactPage";
 import Home from "./pages/Home";
-import CreatePortfolio from "./components/CreatePortofolio";
+import CreatePortfolio from "./components/CreatePortfolio";
 
 function App() {
   return (

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import image1 from "../assets/image1.jpg";
-import Topbar from "../components/Topbar";
+import Topbar from "./Topbar";
 
 const CreatePortfolio = () => {
   const [profileImage, setProfileImage] = useState(null);
