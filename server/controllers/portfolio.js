@@ -11,6 +11,23 @@ export const getAllPortfolios = async (req, res) => {
   }
 };
 
+// Get a single portfolio by ID
+export const getPortfolioById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const portfolio = await Portfolio.findById(id);
+    
+    if (!portfolio) {
+      return res.status(404).json({ message: "Portfolio not found" });
+    }
+    
+    res.status(200).json(portfolio);
+  } catch (error) {
+    console.error("Error fetching portfolio:", error);
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // Create a new portfolio
 export const createPortfolio = async (req, res) => {
   try {

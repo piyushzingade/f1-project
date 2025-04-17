@@ -5,6 +5,7 @@ import { AboutUs } from "./pages/AboutUsPage";
 import { ContactUs } from "./pages/ContactPage";
 import Home from "./pages/Home";
 import CreatePortfolio from "./components/CreatePortfolio";
+import PortfolioDetail from "./pages/PortfolioDetail";
 
 function App() {
   return (
@@ -15,7 +16,8 @@ function App() {
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/contact-us" element={<ContactUs />} />
         <Route path="/" element={<Home />} />
-        <Route path="/createPortfolio" element={<CreatePortfolio />} />
+        <Route path="/create-portfolio" element={<CreatePortfolio />} />
+        <Route path="/portfolio/:id" element={<PortfolioDetail />} />
       </Routes>
     </Router>
   );
