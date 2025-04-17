@@ -4,12 +4,15 @@ import Topbar from "./Topbar";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { BACKENDURL } from "../config";
+import { useAuth } from "../context/AuthContext";
 
 const CreatePortfolio = () => {
   const navigate = useNavigate();
+  const { user, setPortfolio } = useAuth();
   const [profileImage, setProfileImage] = useState(null);
   const [bestShots, setBestShots] = useState([]);
   const [formData, setFormData] = useState({
+    userId: user?._id || "",
     fullName: "",
     contactNumber: "",
     specialization: "",
@@ -104,8 +107,10 @@ const CreatePortfolio = () => {
       const response = await axios.post(`${BACKENDURL}/portfolios`, formData);
       
       if (response.status === 201) {
-        // Redirect to the portfolio page or show success message
-        navigate("/home");
+        // Update the portfolio in the auth context
+        setPortfolio(response.data);
+        // Redirect to the portfolio page
+        navigate(`/portfolio/${response.data._id}`);
       }
     } catch (err) {
       console.error("Error creating portfolio:", err);
@@ -114,6 +119,12 @@ const CreatePortfolio = () => {
       setLoading(false);
     }
   };
+
+  // Redirect to login if not authenticated
+  if (!user) {
+    navigate("/login");
+    return null;
+  }
 
   return (
     <div

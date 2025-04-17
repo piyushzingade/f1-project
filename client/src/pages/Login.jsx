@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import image1 from "../assets/image1.jpg";
-import { BACKENDURL } from "../config";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +12,7 @@ const Login = () => {
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -20,22 +20,41 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Login - Attempting login with email:", formData.email);
+    setError("");
+
     try {
-      const res = await axios.post(`${BACKENDURL}/auth/login`, formData);
-      console.log("Login successful", res.data);
-      toast.success("Login successful! Redirecting...", {
-        position: "top-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
-      // Add a small delay before navigation to allow the toast to be seen
-      setTimeout(() => {
-        navigate("/");
-      }, 1500);
+      const result = await login(formData.email, formData.password);
+      console.log("Login - Login result:", result);
+      
+      if (result.success) {
+        console.log("Login - Login successful, redirecting to home");
+        toast.success("Login successful! Redirecting...", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        // Add a small delay before navigation to allow the toast to be seen
+        setTimeout(() => {
+          navigate("/");
+        }, 1500);
+      } else {
+        console.log("Login - Login failed:", result.error);
+        setError(result.error);
+        toast.error(result.error, {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      }
     } catch (err) {
+      console.error("Login - Unexpected error during login:", err);
       const errorMessage = err.response?.data?.error || "Login failed.";
       setError(errorMessage);
       toast.error(errorMessage, {

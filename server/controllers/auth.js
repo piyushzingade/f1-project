@@ -68,3 +68,27 @@ export const login = async (req, res) => {
     res.status(500).json({ error: "Server error. Please try again later." });
   }
 };
+
+// VERIFY TOKEN
+export const verifyToken = async (req, res) => {
+  try {
+    const token = req.headers.token;
+    if (!token) {
+      return res.status(401).json({ error: "No token provided" });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.id);
+    
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Remove sensitive data
+    const { password, ...userData } = user.toObject();
+    res.status(200).json({ user: userData });
+  } catch (err) {
+    console.error("Token verification failed:", err);
+    res.status(401).json({ error: "Invalid token" });
+  }
+};
