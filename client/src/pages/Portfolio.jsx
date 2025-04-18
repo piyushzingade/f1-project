@@ -75,9 +75,14 @@ const Portfolio = () => {
             <div className="flex flex-col md:flex-row items-center gap-6">
               <div className="w-48 h-48 rounded-full overflow-hidden">
                 <img
-                  src={`${BACKENDURL}/${portfolio.profileImage}`}
+                  src={`/public/assets/${portfolio.profileImage.split('/').pop()}`}
                   alt={portfolio.fullName}
                   className="w-full h-full object-cover"
+                  onError={(e) => {
+                    console.error("Image loading error:", e.target.src);
+                    e.target.onerror = null;
+                    e.target.src = "/assets/default-profile.jpg";
+                  }}
                 />
               </div>
               <div className="flex-1 text-center md:text-left">
@@ -103,9 +108,14 @@ const Portfolio = () => {
                 >
                   <div className="aspect-w-16 aspect-h-9 rounded-lg overflow-hidden">
                     <img
-                      src={`${BACKENDURL}/${image}`}
+                      src={`/assets/${image.split('/').pop()}`}
                       alt={`Portfolio image ${index + 1}`}
                       className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                      onError={(e) => {
+                        console.error("Image loading error:", e.target.src);
+                        e.target.onerror = null;
+                        e.target.src = "/assets/default-profile.jpg";
+                      }}
                     />
                   </div>
                 </motion.div>

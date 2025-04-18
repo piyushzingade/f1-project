@@ -76,9 +76,14 @@ const Home = () => {
               >
                 <div className="w-full h-40 overflow-hidden rounded-lg mb-4">
                   <img 
-                    src={`${BACKENDURL}/${portfolio.profileImage}`} 
+                    src={`/public/assets/${portfolio.profileImage.split('/').pop()}`} 
                     alt={portfolio.fullName} 
                     className="w-full h-full object-cover"
+                    onError={(e) => {
+                      console.error("Image loading error:", e.target.src);
+                      e.target.onerror = null;
+                      e.target.src = "/assets/default-profile.jpg";
+                    }}
                   />
                 </div>
                 <p className="text-brown-800 font-semibold">{portfolio.fullName}</p>

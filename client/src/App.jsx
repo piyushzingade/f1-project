@@ -6,6 +6,7 @@ import { ContactUs } from "./pages/ContactPage";
 import Home from "./pages/Home";
 import CreatePortfolio from "./components/CreatePortfolio";
 import PortfolioDetail from "./pages/PortfolioDetail";
+import ImageUploadPage from "./pages/ImageUploadPage";
 import { AuthProvider } from "./context/AuthContext";
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/create-portfolio" element={<CreatePortfolio />} />
           <Route path="/portfolio/:id" element={<PortfolioDetail />} />
+          <Route path="/image-upload" element={<ImageUploadPage />} />
         </Routes>
       </Router>
     </AuthProvider>

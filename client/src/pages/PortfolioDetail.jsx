@@ -91,9 +91,14 @@ const PortfolioDetail = () => {
             <div className="md:w-1/3 p-6 flex flex-col items-center">
               <div className="w-48 h-48 rounded-full overflow-hidden border-4 border-gray-300 shadow-lg mb-4">
                 <img 
-                  src={portfolio.profileImage} 
+                  src={`/public/assets/${portfolio.profileImage.split('/').pop()}`} 
                   alt={portfolio.fullName} 
                   className="w-full h-full object-cover"
+                  onError={(e) => {
+                    console.error("Image loading error:", e.target.src);
+                    e.target.onerror = null;
+                    e.target.src = "/assets/default-profile.jpg";
+                  }}
                 />
               </div>
               <h1 className="text-2xl font-bold text-gray-800 mb-2">{portfolio.fullName}</h1>
@@ -127,9 +132,14 @@ const PortfolioDetail = () => {
                     {portfolio.bestShots.map((shot, index) => (
                       <div key={index} className="aspect-w-1 aspect-h-1">
                         <img 
-                          src={shot} 
+                          src={`/public/assets/${shot.split('/').pop()}`} 
                           alt={`Best shot ${index + 1}`} 
                           className="w-full h-full object-cover rounded-lg shadow-md"
+                          onError={(e) => {
+                            console.error("Image loading error:", e.target.src);
+                            e.target.onerror = null;
+                            e.target.src = "/assets/default-profile.jpg";
+                          }}
                         />
                       </div>
                     ))}
